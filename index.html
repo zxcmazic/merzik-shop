@@ -10,14 +10,13 @@
             --bg-color: #121216;
             --card-bg: #1c1c24;
             --accent-color: #8a2be2;
-            --accent-hover: #7b1fa2;
             --text-color: #ffffff;
             --text-muted: #a0a0b0;
             --danger-color: #ff4757;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -25,242 +24,91 @@
             padding-bottom: 90px;
         }
 
-        /* Шапка с кнопкой корзины */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .header h1 {
-            font-size: 20px;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .cart-btn-header {
-            background: var(--card-bg);
-            border: 1px solid var(--accent-color);
-            color: var(--text-color);
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        /* Категории (вкладки) */
-        .categories {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            margin-bottom: 20px;
-            padding-bottom: 5px;
-        }
-        .categories::-webkit-scrollbar { display: none; }
-
-        .category-btn {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            border: 1px solid #2d2d3a;
-            padding: 8px 14px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            white-space: nowrap;
-            transition: all 0.2s ease;
-        }
-
-        .category-btn.active {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: #fff;
-        }
-
-        /* Сетка товаров */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid #2a2a38;
-        }
-
-        .card-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        .card-price {
-            font-size: 14px;
-            color: #b066ff;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 9px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            font-size: 13px;
-        }
-
-        /* Параметры заказа */
-        .order-params {
-            margin-top: 25px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 14px;
-            border: 1px solid #2a2a38;
-        }
-
-        .order-params-title {
-            font-size: 15px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            color: #b066ff;
-        }
-
-        .field-group {
-            margin-bottom: 12px;
-        }
-
-        .field-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            background: #121216;
-            border: 1px solid #333345;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        /* Модальные окна */
-        .modal {
-            display: none;
+        /* Окно проверки 18+ */
+        .age-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
+            background: rgba(10, 10, 14, 0.96);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
 
-        .modal-content {
+        .age-box {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 350px;
-            max-height: 80vh;
-            overflow-y: auto;
             border: 1px solid #3a3a4d;
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .modal-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
+        .age-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+        .age-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
+        .age-btn-accept { background: var(--accent-color); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: bold; width: 100%; margin-bottom: 8px; cursor: pointer; }
+        .age-btn-decline { background: transparent; color: var(--danger-color); border: 1px solid var(--danger-color); padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; }
 
-        .option-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
+        /* Шапка */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .header h1 { font-size: 20px; margin: 0; }
+        .cart-btn-header { background: var(--card-bg); border: 1px solid var(--accent-color); color: var(--text-color); padding: 8px 14px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
-        .option-btn {
-            background: #252533;
-            border: 1px solid #333345;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 14px;
-        }
+        /* Категории */
+        .categories { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 5px; }
+        .categories::-webkit-scrollbar { display: none; }
+        .category-btn { background-color: var(--card-bg); color: var(--text-color); border: 1px solid #2d2d3a; padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 13px; white-space: nowrap; }
+        .category-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); }
 
-        /* Элементы корзины */
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #2a2a3a;
-        }
+        /* Сетка */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .card { background: var(--card-bg); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #2a2a38; }
+        .card-title { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+        .card-price { font-size: 14px; color: #b066ff; font-weight: bold; margin-bottom: 10px; }
+        .btn { background: var(--accent-color); color: white; border: none; padding: 9px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 13px; }
 
-        .cart-item-info {
-            font-size: 13px;
-        }
+        /* Форма параметров */
+        .order-params { margin-top: 25px; background: var(--card-bg); padding: 15px; border-radius: 14px; border: 1px solid #2a2a38; }
+        .order-params-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; color: #b066ff; }
+        .field-group { margin-bottom: 12px; }
+        .field-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        select, input, textarea { width: 100%; padding: 10px; border-radius: 8px; background: #121216; border: 1px solid #333345; color: white; box-sizing: border-box; font-family: inherit; }
+        textarea { resize: vertical; min-height: 60px; }
 
-        .cart-item-sub {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
+        /* Модалки */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); padding: 20px; border-radius: 16px; width: 100%; max-width: 350px; max-height: 80vh; overflow-y: auto; border: 1px solid #3a3a4d; }
+        .modal-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; }
+        .option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+        .option-btn { background: #252533; border: 1px solid #333345; color: white; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; font-size: 14px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #2a2a3a; }
+        .cart-item-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .delete-btn { background: var(--danger-color); color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
-        .delete-btn {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        /* Фиксированная кнопка внизу */
-        .main-button {
-            position: fixed;
-            bottom: 15px;
-            left: 15px;
-            right: 15px;
-            background: #2ec761;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: none;
-            box-shadow: 0 4px 12px rgba(46, 199, 97, 0.4);
-        }
+        .main-button { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #2ec761; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; display: none; box-shadow: 0 4px 12px rgba(46, 199, 97, 0.4); }
     </style>
 </head>
 <body>
+
+    <!-- Всплывающее окно 18+ (появляется при каждом входе) -->
+    <div class="age-overlay" id="age-modal">
+        <div class="age-box">
+            <div style="font-size: 40px; margin-bottom: 10px;">🔞</div>
+            <div class="age-title">Подтвердите возраст</div>
+            <div class="age-desc">Для доступа к магазину вам должно быть больше 18 лет.</div>
+            <button class="age-btn-accept" onclick="confirmAge()">Мне есть 18 лет</button>
+            <button class="age-btn-decline" onclick="declineAge()">Мне нет 18</button>
+        </div>
+    </div>
 
     <div class="header">
         <h1>Merzik Shop</h1>
         <button class="cart-btn-header" onclick="openCartModal()">🛒 Корзина (<span id="cart-count">0</span>)</button>
     </div>
 
-    <!-- Вкладки категорий -->
     <div class="categories">
         <button class="category-btn active" onclick="switchCategory('all')">✨ Все</button>
         <button class="category-btn" onclick="switchCategory('device')">POD-системы</button>
@@ -268,10 +116,8 @@
         <button class="category-btn" onclick="switchCategory('consumable')">⚙️ Расходники</button>
     </div>
 
-    <!-- Сетка всех товаров -->
     <div class="grid" id="products-grid"></div>
 
-    <!-- Параметры встречи -->
     <div class="order-params">
         <div class="order-params-title">Параметры встречи</div>
         <div class="field-group">
@@ -286,12 +132,16 @@
             <label>Время встречи:</label>
             <input type="text" id="time-input" value="18:45" placeholder="Пример: 18:30">
         </div>
+        <!-- Поле для комментария -->
+        <div class="field-group">
+            <label>Комментарий к заказу (необязательно):</label>
+            <textarea id="comment-input" placeholder="Ваши пожелания или дополнительный контакт..."></textarea>
+        </div>
     </div>
 
-    <!-- Кнопка оформления заказа -->
     <button id="submit-btn" class="main-button" onclick="sendOrder()">Оформить заказ</button>
 
-    <!-- Модалка выбора параметров (Вкус / Цвет / Сопротивление) -->
+    <!-- Модалка вариантов -->
     <div class="modal" id="option-modal">
         <div class="modal-content">
             <div class="modal-title" id="modal-label-text">Выберите параметр:</div>
@@ -300,7 +150,7 @@
         </div>
     </div>
 
-    <!-- Модалка Корзины -->
+    <!-- Модалка корзины -->
     <div class="modal" id="cart-modal">
         <div class="modal-content">
             <div class="modal-title">🛒 Ваша корзина</div>
@@ -313,17 +163,14 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // База товаров с эмодзи в опциях
+        function confirmAge() { document.getElementById('age-modal').style.display = 'none'; }
+        function declineAge() { tg.close(); }
+
         const products = [
-            // POD-системы (Цвета)
             { id: 1, category: 'device', name: 'XROS 3 Mini', price: '65.00 BYN', options: ['🖤 Black', '💙 Navy Blue', '🩶 Space Grey', '🩷 Rose Pink'] },
             { id: 2, category: 'device', name: 'AEGIS Hero 2', price: '95.00 BYN', options: ['🖤 Black', '🤍 Silver', '❤️ Red', '🌈 Rainbow'] },
-
-            // Жидкости (Вкусы)
             { id: 3, category: 'liquid', name: 'RELL ULTIMATE 20mg', price: '23.00 BYN', options: ['🍓 Клубника-Лайм', '🫐 Черника-Мята', '🥭 Спелый Манго', '⚡ Энергетик'] },
             { id: 4, category: 'liquid', name: 'OGGO Reals 20mg', price: '15.00 BYN', options: ['🍉 Сочный Арбуз', '🍇 Ледяной Виноград', '🍏 Двойное Яблоко'] },
-
-            // Расходники (Сопротивление)
             { id: 5, category: 'consumable', name: 'Испаритель XROS', price: '8.00 BYN', options: ['⚡ 0.6 Ом', '⚡ 0.8 Ом', '⚡ 1.0 Ом'] },
             { id: 6, category: 'consumable', name: 'Картридж Nevoks Feelin', price: '10.00 BYN', options: ['⚡ 0.6 Ом', '⚡ 1.0 Ом'] }
         ];
@@ -332,11 +179,9 @@
         let selectedProduct = null;
         let activeCategory = 'all';
 
-        // Генерация карточек товаров
         function renderProducts() {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = '';
-
             products.forEach(p => {
                 if (activeCategory === 'all' || p.category === activeCategory) {
                     grid.innerHTML += `
@@ -352,7 +197,6 @@
             });
         }
 
-        // Переключение вкладок
         function switchCategory(cat) {
             activeCategory = cat;
             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
@@ -360,86 +204,57 @@
             renderProducts();
         }
 
-        // Открытие выбора вкуса/цвета
         function openOptionModal(productId) {
             selectedProduct = products.find(p => p.id === productId);
             const label = document.getElementById('modal-label-text');
             const list = document.getElementById('option-list');
 
-            if (selectedProduct.category === 'device') {
-                label.innerText = 'Выберите цвет:';
-            } else if (selectedProduct.category === 'liquid') {
-                label.innerText = 'Выберите вкус:';
-            } else if (selectedProduct.category === 'consumable') {
-                label.innerText = 'Выберите сопротивление:';
-            }
+            if (selectedProduct.category === 'device') label.innerText = 'Выберите цвет:';
+            else if (selectedProduct.category === 'liquid') label.innerText = 'Выберите вкус:';
+            else if (selectedProduct.category === 'consumable') label.innerText = 'Выберите сопротивление:';
 
             list.innerHTML = '';
             selectedProduct.options.forEach(opt => {
-                list.innerHTML += `
-                    <button class="option-btn" onclick="addToCart('${opt}')">${opt}</button>
-                `;
+                list.innerHTML += `<button class="option-btn" onclick="addToCart('${opt}')">${opt}</button>`;
             });
 
             document.getElementById('option-modal').style.display = 'flex';
         }
 
-        function closeOptionModal() {
-            document.getElementById('option-modal').style.display = 'none';
-        }
+        function closeOptionModal() { document.getElementById('option-modal').style.display = 'none'; }
 
-        // Добавление позиций в корзину
         function addToCart(selectedOption) {
             const itemKey = `${selectedProduct.id}_${selectedOption}`;
             const existingItem = cart.find(i => i.key === itemKey);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
+            if (existingItem) existingItem.quantity += 1;
+            else {
                 cart.push({
-                    key: itemKey,
-                    id: selectedProduct.id,
-                    name: selectedProduct.name,
-                    option: selectedOption,
-                    price: selectedProduct.price,
-                    quantity: 1
+                    key: itemKey, id: selectedProduct.id, name: selectedProduct.name,
+                    option: selectedOption, price: selectedProduct.price, quantity: 1
                 });
             }
-
             closeOptionModal();
             updateCartUI();
         }
 
-        // Удаление позиций из корзины
         function removeFromCart(key) {
             cart = cart.filter(i => i.key !== key);
             updateCartUI();
             renderCartModalList();
         }
 
-        // Обновление кнопок и счетчиков
         function updateCartUI() {
             const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').innerText = totalCount;
-
             const submitBtn = document.getElementById('submit-btn');
             if (totalCount > 0) {
                 submitBtn.style.display = 'block';
                 submitBtn.innerText = `Оформить заказ (${totalCount} шт.)`;
-            } else {
-                submitBtn.style.display = 'none';
-            }
+            } else { submitBtn.style.display = 'none'; }
         }
 
-        // Окно корзины
-        function openCartModal() {
-            renderCartModalList();
-            document.getElementById('cart-modal').style.display = 'flex';
-        }
-
-        function closeCartModal() {
-            document.getElementById('cart-modal').style.display = 'none';
-        }
+        function openCartModal() { renderCartModalList(); document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCartModal() { document.getElementById('cart-modal').style.display = 'none'; }
 
         function renderCartModalList() {
             const list = document.getElementById('cart-items-list');
@@ -447,12 +262,11 @@
                 list.innerHTML = '<div style="text-align:center; color:#aaa; padding:15px;">Корзина пуста</div>';
                 return;
             }
-
             list.innerHTML = '';
             cart.forEach(item => {
                 list.innerHTML += `
                     <div class="cart-item">
-                        <div class="cart-item-info">
+                        <div>
                             <div><b>${item.name}</b></div>
                             <div class="cart-item-sub">${item.option} | ${item.price} × ${item.quantity} шт.</div>
                         </div>
@@ -462,33 +276,23 @@
             });
         }
 
-        // Отправка данных боту
-        // Отправка данных боту
         function sendOrder() {
             if (cart.length === 0) return;
-
             const station = document.getElementById('station-select').value;
             const time = document.getElementById('time-input').value;
+            const comment = document.getElementById('comment-input').value.trim();
 
-            // Считаем общую сумму заказа
             let totalPrice = 0;
-
             const formattedItems = cart.map(i => {
-                // Преобразуем строку "65.00 BYN" в чистое число 65.00
                 const numPrice = parseFloat(i.price) || 0;
                 totalPrice += numPrice * i.quantity;
-
-                return {
-                    name: i.name,
-                    option: i.option,
-                    price: numPrice,
-                    quantity: i.quantity
-                };
+                return { name: i.name, option: i.option, price: numPrice, quantity: i.quantity };
             });
 
             const data = {
                 station: station,
                 time: time,
+                comment: comment,
                 items: formattedItems,
                 total_price: totalPrice.toFixed(2)
             };
@@ -496,7 +300,6 @@
             tg.sendData(JSON.stringify(data));
         }
 
-        // Старт
         renderProducts();
     </script>
 </body>
