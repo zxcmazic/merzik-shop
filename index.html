@@ -66,7 +66,7 @@
         /* Сетка */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .card { background: var(--card-bg); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #2a2a38; }
-        .card-title { font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+        .card-title { font-size: 13px; font-weight: bold; margin-bottom: 6px; line-height: 1.3; }
         .card-price { font-size: 14px; color: #b066ff; font-weight: bold; margin-bottom: 10px; }
         .btn { background: var(--accent-color); color: white; border: none; padding: 9px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 13px; }
 
@@ -83,7 +83,7 @@
         .modal-content { background: var(--card-bg); padding: 20px; border-radius: 16px; width: 100%; max-width: 350px; max-height: 80vh; overflow-y: auto; border: 1px solid #3a3a4d; }
         .modal-title { font-size: 16px; font-weight: bold; margin-bottom: 15px; }
         .option-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .option-btn { background: #252533; border: 1px solid #333345; color: white; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; font-size: 14px; }
+        .option-btn { background: #252533; border: 1px solid #333345; color: white; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; font-size: 13px; line-height: 1.3; }
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #2a2a3a; }
         .cart-item-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .delete-btn { background: var(--danger-color); color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
@@ -93,7 +93,7 @@
 </head>
 <body>
 
-    <!-- Всплывающее окно 18+ (появляется при каждом входе) -->
+    <!-- Всплывающее окно 18+ -->
     <div class="age-overlay" id="age-modal">
         <div class="age-box">
             <div style="font-size: 40px; margin-bottom: 10px;">🔞</div>
@@ -111,9 +111,11 @@
 
     <div class="categories">
         <button class="category-btn active" onclick="switchCategory('all')">✨ Все</button>
-        <button class="category-btn" onclick="switchCategory('device')">POD-системы</button>
-        <button class="category-btn" onclick="switchCategory('liquid')">🧪 Жидкости</button>
-        <button class="category-btn" onclick="switchCategory('consumable')">⚙️ Расходники</button>
+        <button class="category-btn" onclick="switchCategory('pods')">👑 Под-устройства</button>
+        <button class="category-btn" onclick="switchCategory('disposables')">🤜 Одноразки</button>
+        <button class="category-btn" onclick="switchCategory('liquids')">🔮 Жидкости</button>
+        <button class="category-btn" onclick="switchCategory('snus')">😵 Снюс</button>
+        <button class="category-btn" onclick="switchCategory('consumables')">⚙️ Расходники</button>
     </div>
 
     <div class="grid" id="products-grid"></div>
@@ -132,7 +134,6 @@
             <label>Время встречи:</label>
             <input type="text" id="time-input" value="18:45" placeholder="Пример: 18:30">
         </div>
-        <!-- Поле для комментария -->
         <div class="field-group">
             <label>Комментарий к заказу (необязательно):</label>
             <textarea id="comment-input" placeholder="Ваши пожелания или дополнительный контакт..."></textarea>
@@ -144,7 +145,7 @@
     <!-- Модалка вариантов -->
     <div class="modal" id="option-modal">
         <div class="modal-content">
-            <div class="modal-title" id="modal-label-text">Выберите параметр:</div>
+            <div class="modal-title" id="modal-label-text">Выберите вариант:</div>
             <div class="option-list" id="option-list"></div>
             <button class="btn" style="background:#3a3a4d;" onclick="closeOptionModal()">Отмена</button>
         </div>
@@ -167,12 +168,69 @@
         function declineAge() { tg.close(); }
 
         const products = [
-            { id: 1, category: 'device', name: 'XROS 3 Mini', price: '65.00 BYN', options: ['🖤 Black', '💙 Navy Blue', '🩶 Space Grey', '🩷 Rose Pink'] },
-            { id: 2, category: 'device', name: 'AEGIS Hero 2', price: '95.00 BYN', options: ['🖤 Black', '🤍 Silver', '❤️ Red', '🌈 Rainbow'] },
-            { id: 3, category: 'liquid', name: 'RELL ULTIMATE 20mg', price: '23.00 BYN', options: ['🍓 Клубника-Лайм', '🫐 Черника-Мята', '🥭 Спелый Манго', '⚡ Энергетик'] },
-            { id: 4, category: 'liquid', name: 'OGGO Reals 20mg', price: '15.00 BYN', options: ['🍉 Сочный Арбуз', '🍇 Ледяной Виноград', '🍏 Двойное Яблоко'] },
-            { id: 5, category: 'consumable', name: 'Испаритель XROS', price: '8.00 BYN', options: ['⚡ 0.6 Ом', '⚡ 0.8 Ом', '⚡ 1.0 Ом'] },
-            { id: 6, category: 'consumable', name: 'Картридж Nevoks Feelin', price: '10.00 BYN', options: ['⚡ 0.6 Ом', '⚡ 1.0 Ом'] }
+            // ПОД-УСТРОЙСТВА
+            { id: 1, category: 'pods', name: 'XROS Mini FRESH EDITION', price: '55.00 BYN', options: ['Фиолетовая Волна', 'Серебрянный', 'Космический Черный', 'Космический Серый'] },
+            { id: 2, category: 'pods', name: 'XROS 5 Mini', price: '75.00 BYN', options: ['Оранжевая Кожа', 'Голубой', 'Фиолетовый'] },
+            { id: 3, category: 'pods', name: 'XROS 6 Mini', price: '85.00 BYN', options: ['Салатовый', 'Белый Перламутр', 'Голубой', 'Оранжевый', 'Пурпурный', 'Розовый', 'Серебряный', 'Синий Перламутр', 'Темно Серый'] },
+            { id: 4, category: 'pods', name: 'XROS 6', price: '105.00 BYN', options: ['Бездонно-Синий', 'Графитово-Серый', 'Жемчужно-Белый', 'Черный', 'Черный Сланец', 'Шелковисто-Серый'] },
+            { id: 5, category: 'pods', name: 'PASITO 3', price: '140.00 BYN', options: ['Камуфляжный'] },
+
+            // ОДНОРАЗКИ
+            { id: 6, category: 'disposables', name: 'PULSE RETURNS 15000', price: '30.00 BYN', options: ['Ледяная Голубая Малина', 'Черешня', 'Черника Арбуз', 'Холодная Мята', 'Драгонфрут Дыня', 'Ледяной Мультифрукт', 'Сочный Персик', 'Мята Майями', 'Розовый Лимонад', 'Кислое Яблоко', 'Ледяное Кислое Яблоко', 'Тропические Фрукты', 'Белые Мармеладные Мишки Лёд'] },
+            { id: 7, category: 'disposables', name: 'BEYOND 20000', price: '35.00 BYN', options: ['Лимон Лайм', 'Киви Маракуйя Гуава', 'Тройной Манго', 'Ананас Кокос Лёд', 'Персик Ананас Манго'] },
+            { id: 8, category: 'disposables', name: 'ELFBAR GH33000 PRO', price: '50.00 BYN', options: ['Яблоко Киви Лёд', 'Черника Малина Лёд', 'Вишня Гранат Ананас', 'Вишня', 'Грейпфрут Маракуйя Гуава', 'Виноград Лёд', 'Киви Ананас Персик', 'Лимон Лайм', 'Горная Мята', 'Грушевая Содовая', 'Гранат', 'Малина Грейпфрут Лимон', 'Арбуз Лёд'] },
+            { id: 9, category: 'disposables', name: 'ELFBAR MOONNIGHT 40000', price: '50.00 BYN', options: ['Арбуз Вишня', 'Виноград Лёд (x2)', 'Виноград Малина (x2)', 'Гранат', 'Киви Маракуйя Гуава', 'Кола Лайм', 'Персик Лёд'] },
+
+            // СНЮС
+            { id: 10, category: 'snus', name: 'DRYMOST VOLT 75mg', price: '20.00 BYN', options: ['Мята', 'Цитрус'] },
+            { id: 11, category: 'snus', name: 'DRYMOST STORM 150mg', price: '20.00 BYN', options: ['Яблоко'] },
+            { id: 12, category: 'snus', name: 'DRYMOST BIOSHOCK 175mg', price: '20.00 BYN', options: ['Мята', 'Вишня', 'Апельсин'] },
+            { id: 13, category: 'snus', name: 'DRYMOST ARMAGEDDON 200mg', price: '20.00 BYN', options: ['Фанта', 'Маракуйя Клубника', 'Эвкалипт Мята', 'Баблгам', 'Вишнёвая Газировка', 'Жвачка', 'Лесные Ягоды', 'Яблоко Смородина'] },
+            { id: 14, category: 'snus', name: 'GLITCH 75mg', price: '20.00 BYN', options: ['Ледяная Груша', 'Жвачка с Мятой', 'Двойная Мята', 'Ледяной Лимон', 'Эвкалипт Мята', 'Апельсиновая Газировка', 'Лимон Кола'] },
+            { id: 15, category: 'snus', name: 'GLITCH 150mg', price: '20.00 BYN', options: ['Фанта', 'Двойное Яблоко', 'Кола Лимон', 'Ледяная Груша', 'Ледяной Лимон', 'Ментол', 'Эвкалипт Мята'] },
+            { id: 16, category: 'snus', name: 'ICEBERG EXTREME 75mg', price: '20.00 BYN', options: ['Ананас Манго Кокос', 'Арбуз Лайм', 'Виноград', 'Вишня', 'Дикие Ягоды', 'Дыня Персик'] },
+            { id: 17, category: 'snus', name: 'ICEBERG HARDCORE 150mg', price: '20.00 BYN', options: ['Ягодный Микс (Black Fury)', 'Дикие Ягоды и Хвоя (Dark Matter)', 'Морозная Мята (Frozen Pulse)', 'Ментол (Ice Shock)'] },
+
+            // ЖИДКОСТИ
+            { id: 18, category: 'liquids', name: 'NICE SHOT', price: '20.00 BYN', options: ['Три Ягоды', 'Ледяная Маракуйя с Яблоком', 'Кислое Яблоко', 'Клубника Киви', 'Лимонад из Голубой Малины', 'Лимон Мята (x2)', 'Мятная Черника', 'Кислая Малина с Гранатом'] },
+            { id: 19, category: 'liquids', name: 'NICE SHOT DOUBLE ICE', price: '20.00 BYN', options: ['Малиновый Лимонад', 'Зеленое Яблоко Виноград Малина', 'Лимонад Манго', 'Клубника Банан', 'Черничный Лимонад', 'Виноград Сакура', 'Арбузный Лимонад'] },
+            { id: 20, category: 'liquids', name: 'NICE SHOT LOW SWEETNESS', price: '20.00 BYN', options: ['Клубнично-Арбузная Жвачка', 'Черника Малина', 'Двойное Яблоко', 'Киви Маракуйя Гуава', 'Клубника Драгонфрут', 'Апельсин с Мандарином', 'Скитлс', 'Арбузные Мишки Гамми', 'Ежевика', 'Ананас с Красным Апельсином', 'Черная Смородина'] },
+            { id: 21, category: 'liquids', name: 'ISTERIKA x САМОУБИЙЦА v2 80mg', price: '20.00 BYN', options: ['Малиновый Энергетик (x2)', 'Вишнёвый Ментос (x2)', 'Вишня Энергетик (x2)', 'Кислый Скитлс (x2)', 'Киви Энергетик (x2)', 'Черника Смородина', 'Клубника Киви Мята (x2)', 'Фруктовый Мармелад (x2)', 'Ягодный Энергетик', 'Ментос Смородина Малина (x2)', 'Черника Энергетик (x2)', 'Энергетик с Лесными Ягодами', 'Виноград Дыня (x2)', 'Виноград Клубника (x2)', 'Виноградная Жвачка', 'Вишнёвая Жвачка (x2)', 'Двойной Виноград', 'Лесные Ягоды (x2)', 'Малина Ежевика (x2)'] },
+            { id: 22, category: 'liquids', name: 'ANNIMA x САМОУБИЙЦА v2 70mg', price: '20.00 BYN', options: ['Персиковый Йогурт'] },
+            { id: 23, category: 'liquids', name: 'САМОУБИЙЦА v2 SOUR 70mg', price: '20.00 BYN', options: ['Кислая Слива с Апельсином (x3)', 'Кислые Мармеладные Червячки', 'Кислый Энергетик с Грейпфрутом и Гранатом', 'Кислый Тархун с Земляникой', 'Кислая Ежевика с Шелковицей', 'Кислая Облепиха с Вишней', 'Кислая Маракуйя и Гуава', 'Кислый Скитлс с Яблоком', 'Кислый Ананасовый Сок с Киви'] },
+            { id: 24, category: 'liquids', name: 'ЗЛАЯ МОНАШКА 70mg', price: '20.00 BYN', options: ['Фанта с Колой', 'Кола Тамаринд Лайм (x2)', 'Красный Апельсин со Специями (x2)', 'Грейпфрут Базилик (x2)'] },
+            { id: 25, category: 'liquids', name: 'ЗЛАЯ МИЛФА 70mg', price: '20.00 BYN', options: ['Лит Энерджи Гранат Малина (x2)', 'Редбулл Виноград', 'Клубника Банан Папайя (x2)', 'Клубничный Лимонад со Льдом (x2)', 'Ледяная Кола (x2)', 'Морс из Лесных Ягод (x2)', 'Персик Маракуйя (x2)', 'Тропические Фрукты (x2)', 'Энергетик Монстр (x2)', 'Ягодный Спрайт (x2)'] },
+            { id: 26, category: 'liquids', name: 'SLIME EXTRA PREMIUM 60mg', price: '18.00 BYN', options: ['Ягодные Леденцы (x2)', 'Кислый Чупачупс (x2)', 'Дыня Арбуз Земляника', 'Арбуз Клубника (x2)', 'Кислое Киви Клубника (x2)', 'Кислые Вишнёвые Червячки', 'Кислый Малиновый Энергетик (x2)', 'Кислое Яблоко Киви', 'Кислый Мармелад Клубника', 'Кислая Черника Лайм', 'Виноградный Сок', 'Бодрящий Спрайт'] },
+            { id: 27, category: 'liquids', name: 'ANNIMA LOVE ZOMBIE 50mg', price: '18.00 BYN', options: ['Алоэ Виноград', 'Ананас Киви', 'Арбузный Баблгам', 'Вишня Лёд', 'Грейпфрут Вишня', 'Ежевичный Лимонад', 'Киви Клубника', 'Клубника Банан', 'Клубнично-Вишнёвый Лимонад', 'Клубничный Леденец', 'Мандариновая Фанта', 'Морозный Редбулл', 'Персиковый Шейк', 'Фанта Маракуйя', 'Энергетик Виноград', 'Яблоко Виноград', 'Яблоко Персик'] },
+            { id: 28, category: 'liquids', name: 'CATSWILL x РИК И МОРТИ', price: '20.00 BYN', options: ['Харибо Кола с Лимоном (x2)', 'Фрутелла Морошка Лимон', 'Банан Дыня Мята', 'Малина Яблоко Лёд (x2)', 'Фрутелла Лайм Лимон Малина (x3)', 'Кислые Ленточки Клубника Ежевика (x2)'] },
+            { id: 29, category: 'liquids', name: 'CATSWILL MONSTER', price: '20.00 BYN', options: ['Кислая Черника Морошка (x2)', 'Кактус Лимон с Холодком (x2)', 'Красное Сладкое Яблоко с Кислинкой (x2)', 'Черника Малина Мята Лёд', 'Кисло-Сладкая Морошка'] },
+            { id: 30, category: 'liquids', name: 'CATSWILL PREMIUM ICE', price: '20.00 BYN', options: ['Клюква Киви (x2)', 'Синяя Малина', 'Малина Лимон (x2)', 'Черная Смородина Лайм Мята (x2)', 'Зеленое Яблоко Лимон Мята (x2)', 'Клубника Малина (x2)', 'Банан Манго (x2)'] },
+            { id: 31, category: 'liquids', name: 'CATSWILL PREMIUM SOUR', price: '20.00 BYN', options: ['Черника Лайм (x2)', 'Тик Так Апельсин Клубника', 'Кактус Клубника', 'Киви Малина (x2)'] },
+            { id: 32, category: 'liquids', name: 'CATSWILL PREMIUM SWEET', price: '20.00 BYN', options: ['Малина Клюква (x3)', 'Клубника Банан Яблоко (x2)', 'Лимонад Вишня Арбуз', 'Яблочный Скитлс (x2)', 'Фрутелла Апельсин Клубника', 'Карамельное Яблоко (x2)', 'Черешневый Сок', 'Скитлс Лимонад Мандарин'] },
+            { id: 33, category: 'liquids', name: 'CATSWILL', price: '18.00 BYN', options: ['Имбирный Лимонад с Малиной (x3)', 'Мамба Манго Апельсин (x3)', 'Мамба Кислое Яблоко Киви (x5)', 'Черника Малина Лимонад (x2)', 'Клубнично-Арбузная Хубба Бубба (x2)', 'Мятная Жвачка (x2)', 'Ананасовый Сироп с Виноградом Лёд (x3)', 'Лимонад Черника Лайм'] },
+            { id: 34, category: 'liquids', name: 'CATSWILL EXTRA', price: '18.00 BYN', options: ['Лимонная Шипучка (x2)', 'Скитлс Кактус Лимон (x2)', 'Ежевика Виноград Ментос', 'Морозный Черный Виноград (x2)', 'Ментос Дыня Арбуз (x2)', 'Виноград Смородина Скитлс', 'Виноград Лайм Мята (x2)', 'Виноград Малина Скитлс', 'Лайм Малина Лёд (x2)', 'Скитлс Апельсин Лайм', 'Яблоко Малина', 'Яблоко Черная Смородина', 'Зеленый Чай Клубника Лайм', 'Кислая Яблочная Хубба Бубба', 'Фанта с Голубой Малиной'] },
+            { id: 35, category: 'liquids', name: 'CATSWILL MALASIAN', price: '18.00 BYN', options: ['Ананас Манго Лимон (x2)', 'Зеленое Яблоко (x2)', 'Йогурт Черешня Банан (x2)', 'Клубничное Мороженое (x2)', 'Лимонад Груша Лимон (x2)', 'Лимонные Конфеты (x2)', 'Морс Гранат Клубника (x2)', 'Розовый Лимонад Малина', 'Цитрус Личи Грейпфрут (x2)'] },
+            { id: 36, category: 'liquids', name: 'DUALL', price: '18.00 BYN', options: ['Грейпфрут Малина Клубника', 'Киви Гуава (x2)', 'Чай с Грейпфрутом и Ягодами', 'Манго Апельсин Мята', 'Шампанское Персик (x2)', 'Фруктовый Мармелад (x4)'] },
+            { id: 37, category: 'liquids', name: 'ИНДИВИDUALL', price: '18.00 BYN', options: ['Кислый Зеленый Скитлс (x2)', 'Банановое Мороженое', 'Ледяная Груша Яблоко', 'Кислое Манго Клубника (x2)'] },
+            { id: 38, category: 'liquids', name: 'РИК И МОРТИ BAD ACID', price: '18.00 BYN', options: ['Яблоко Клубника', 'Лимонные Леденцы', 'Клюква Лайм', 'Ананасовые Леденцы', 'Черника Лимон', 'Персиковый Лимонад', 'Киви Лайм'] },
+            { id: 39, category: 'liquids', name: 'РИК И МОРТИ BAD ICE', price: '18.00 BYN', options: ['Фруктовый Тик Так', 'Спрайт', 'Малиновый Чай с Жасмином (x2)', 'Фруктовая Жвачка', 'Черника Грейпфрут', 'Ананас Клюква'] },
+            { id: 40, category: 'liquids', name: 'РИК И МОРТИ BAD TRIP', price: '18.00 BYN', options: ['Фруктовые Пластинки (x2)', 'Гранат Клубника', 'Гранат Смородина', 'Манго Грейпфрут (x2)', 'Киви Личи', 'Барбарисовый Энергетик', 'Киви Маракуйя Гуава'] },
+            { id: 41, category: 'liquids', name: 'РИК И МОРТИ НА ЗАМЕРЗОНЕ', price: '18.00 BYN', options: ['Мятное Мороженое (x2)', 'Кислый Скитлс'] },
+            { id: 42, category: 'liquids', name: 'РИК И МОРТИ НА ЗАМЕРЗОНЕ КИСЛЫЕ', price: '18.00 BYN', options: ['Кислый Апельсиновый Энергетик'] },
+            { id: 43, category: 'liquids', name: 'PODONKI V1/V2 60mg', price: '18.00 BYN', options: ['Арбузное Мороженое (x3)', 'Банановое Молоко', 'Тархун с Киви и Лаймом', 'Клубника с Шампанским'] },
+            { id: 44, category: 'liquids', name: 'PODONKI VINTAGE 60mg', price: '18.00 BYN', options: ['Клюквенная Газировка', 'Яблочный Лимонад', 'Пинаколада с Грушей', 'Юппи Ананас со Льдом'] },
+            { id: 45, category: 'liquids', name: 'PODONKI INFERNO 60mg', price: '18.00 BYN', options: ['Персик'] },
+            { id: 46, category: 'liquids', name: 'PODONKI ISTERIKA 50mg', price: '18.00 BYN', options: ['Грушевый Лимонад (x2)', 'Мармеладные Мишки', 'Кисло-Сладкий Киви', 'Персик Смородина', 'Клюква Лёд', 'Сочная Маракуйя'] },
+            { id: 47, category: 'liquids', name: 'PODONKI LAST HAP 60mg', price: '18.00 BYN', options: ['Лимон Лайм', 'Брусничный Морс', 'Двойное Яблоко Лёд'] },
+            { id: 48, category: 'liquids', name: 'PODONKI PODGON 50mg', price: '18.00 BYN', options: ['Ананас Манго', 'Ананасовая Газировка', 'Апельсиновый Фреш', 'Зеленый Манго', 'Кокос Малина', 'Лимон Мята', 'Лимонные Черви', 'Малина Гранат', 'Малина Хвоя', 'Ментол Мята', 'Сочная Дыня'] },
+            { id: 49, category: 'liquids', name: 'PODONKI x MALASIAN NEW 50mg', price: '18.00 BYN', options: ['Дыня', 'Лимон Лайм (x2)', 'Желтый Манго (x2)', 'Кокос Груша Банан (x2)', 'Кола Мармеладные Мишки', 'Арбуз Маракуйя', 'Розовый Лимонад (x2)', 'Черника Малина Лимон', 'Черника Смородина Анис', 'Яблоко Черешня', 'Мармеладные Мишки Лимон (x2)', 'Ананас Киви', 'Киви Яблоко'] },
+            { id: 50, category: 'liquids', name: 'PODONKI x MALASIAN ARCADE 50mg', price: '18.00 BYN', options: ['Кола Ягоды', 'Арбузный Слаш', 'Нектарин', 'Малиновый Мармелад', 'Черная Смородина Личи', 'Маунти Дью Яблоко'] },
+
+            // РАСХОДНИКИ
+            { id: 51, category: 'consumables', name: 'Испаритель XROS', price: '14.00 BYN', options: ['0.8 om', '0.6 om', '0.4 om'] },
+            { id: 52, category: 'consumables', name: 'Испаритель AEGIS BOOST / HERO', price: '14.00 BYN', options: ['0.2 om', '0.3 om'] },
+            { id: 53, category: 'consumables', name: 'Картридж V.THRU / VMATE', price: '14.00 BYN', options: ['0.7 om'] },
+            { id: 54, category: 'consumables', name: 'Испаритель KNIGHT / PASITO 2', price: '13.00 BYN', options: ['0.3 om', '0.15 om'] }
         ];
 
         let cart = [];
@@ -190,7 +248,7 @@
                                 <div class="card-title">${p.name}</div>
                                 <div class="card-price">${p.price}</div>
                             </div>
-                            <button class="btn" onclick="openOptionModal(${p.id})">В корзину</button>
+                            <button class="btn" onclick="openOptionModal(${p.id})">Выбрать</button>
                         </div>
                     `;
                 }
@@ -209,9 +267,9 @@
             const label = document.getElementById('modal-label-text');
             const list = document.getElementById('option-list');
 
-            if (selectedProduct.category === 'device') label.innerText = 'Выберите цвет:';
-            else if (selectedProduct.category === 'liquid') label.innerText = 'Выберите вкус:';
-            else if (selectedProduct.category === 'consumable') label.innerText = 'Выберите сопротивление:';
+            if (selectedProduct.category === 'pods') label.innerText = 'Выберите цвет:';
+            else if (selectedProduct.category === 'consumables') label.innerText = 'Выберите сопротивление:';
+            else label.innerText = 'Выберите вкус / вариант:';
 
             list.innerHTML = '';
             selectedProduct.options.forEach(opt => {
