@@ -98,9 +98,9 @@
         <div class="age-box">
             <div style="font-size: 40px; margin-bottom: 10px;">🔞</div>
             <div class="age-title">Подтвердите возраст</div>
-            <div class="age-desc">Для доступа к магазину вы должны заплатить за проект.</div>
-            <button class="age-btn-accept" onclick="confirmAge()">А ты заплатил?</button>
-            <button class="age-btn-decline" onclick="declineAge()">Точно заплатил за проект?</button>
+            <div class="age-desc">Для доступа к магазину вам должно быть 18 лет.</div>
+            <button class="age-btn-accept" onclick="confirmAge()">Мне есть 18 лет</button>
+            <button class="age-btn-decline" onclick="declineAge()">Мне нет 18-ти</button>
         </div>
     </div>
 
@@ -127,11 +127,8 @@
             <select id="station-select">
                 <option value="Универсам">🚇 Универсам</option>
                 <option value="Пицца-кофе">🚇 Пицца-кофе</option>
+                <option value="Доставка">🚇 Писать адрес в коментарий</option>
             </select>
-        </div>
-        <div class="field-group">
-            <label>Время встречи:</label>
-            <input type="text" id="time-input" value="18:50" placeholder="Пример: 18:30">
         </div>
         <div class="field-group">
             <label>Комментарий к заказу (необязательно):</label>
