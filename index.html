@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bestia Shop</title>
+    <title>Bestia</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -106,7 +106,7 @@
     </div>
 
     <div class="header">
-        <h1>Bestia Shop ⚡</h1>
+        <h1>Bestia ⚡</h1>
         <button class="cart-btn-header" onclick="openCartModal()">🛒 Корзина (<span id="cart-count">0</span>)</button>
     </div>
 
@@ -352,7 +352,11 @@
         }
 
         function sendOrder() {
-            if (cart.length === 0) return;
+            if (cart.length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+
             const station = document.getElementById('station-select').value;
             const commentInput = document.getElementById('comment-input');
             const comment = commentInput.value.trim();
@@ -363,21 +367,35 @@
                 return;
             }
 
-            let totalPrice = 0;
-            const formattedItems = cart.map(i => {
-                const numPrice = parseFloat(i.price.replace(' BYN', '')) || 0;
-                totalPrice += numPrice * i.quantity;
-                return { name: i.name, option: i.option, price: numPrice, quantity: i.quantity };
-            });
+            try {
+                let totalPrice = 0;
+                const formattedItems = cart.map(i => {
+                    const rawPrice = String(i.price).replace(/[^0-9.]/g, '');
+                    const numPrice = parseFloat(rawPrice) || 0;
+                    totalPrice += numPrice * i.quantity;
+                    return {
+                        name: i.name,
+                        option: i.option,
+                        price: numPrice,
+                        quantity: i.quantity
+                    };
+                });
 
-            const data = {
-                station: station,
-                comment: comment,
-                items: formattedItems,
-                total_price: totalPrice.toFixed(2)
-            };
+                const data = {
+                    station: station,
+                    comment: comment,
+                    items: formattedItems,
+                    total_price: totalPrice.toFixed(2)
+                };
 
-            tg.sendData(JSON.stringify(data));
+                if (window.Telegram && window.Telegram.WebApp) {
+                    tg.sendData(JSON.stringify(data));
+                } else {
+                    alert('Ошибка: Открывайте магазин прямо из Telegram-бота!');
+                }
+            } catch (err) {
+                alert('Произошла ошибка при отправке: ' + err.message);
+            }
         }
 
         renderProducts();
