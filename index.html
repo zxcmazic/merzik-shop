@@ -89,7 +89,7 @@
         .cart-item-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .delete-btn { background: var(--danger-color); color: white; border: none; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
-        .main-button { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #2ec761; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; display: none; box-shadow: 0 4px 12px rgba(46, 199, 97, 0.4); }
+        .main-button { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #2ec761; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; display: none; box-shadow: 0 4px 12px rgba(46, 199, 97, 0.4); z-index: 90; }
     </style>
 </head>
 <body>
@@ -159,27 +159,26 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        // Инициализация Telegram WebApp
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) {
+            tg.expand();
+            tg.ready();
+        }
 
         function confirmAge() { document.getElementById('age-modal').style.display = 'none'; }
-        function declineAge() { tg.close(); }
+        function declineAge() { if (tg) tg.close(); }
 
         const products = [
-            // ПОД-УСТРОЙСТВА
             { id: 1, category: 'pods', name: '🔪 XROS Mini FRESH EDITION', price: '55.00 BYN', options: ['🟣 Фиолетовая Волна', '🪙 Серебрянный', '🖤 Космический Черный', '🩶 Космический Серый'] },
             { id: 2, category: 'pods', name: '🔪 XROS 5 Mini', price: '75.00 BYN', options: ['🟠 Оранжевая Кожа', '🔵 Голубой', '🟣 Фиолетовый'] },
             { id: 3, category: 'pods', name: '🔪 XROS 6 Mini', price: '85.00 BYN', options: ['🟢 Салатовый', '⚪ Белый Перламутр', '🔵 Голубой', '🟠 Оранжевый', '🟣 Пурпурный', '🩷 Розовый', '🪙 Серебряный', '💎 Синий Перламутр', '🩶 Темно Серый'] },
             { id: 4, category: 'pods', name: '🔪 XROS 6', price: '105.00 BYN', options: ['🌊 Бездонно-Синий', '🩶 Графитово-Серый', '🤍 Жемчужно-Белый', '🖤 Черный', '⬛ Черный Сланец', '🐘 Шелковисто-Серый'] },
             { id: 5, category: 'pods', name: '🔪 PASITO 3', price: '140.00 BYN', options: ['🪖 Камуфляжный'] },
-
-            // ОДНОРАЗКИ
             { id: 6, category: 'disposables', name: '💣 PULSE RETURNS 15000', price: '30.00 BYN', options: ['🧊🫐 Ледяная Голубая Малина', '🍒 Черешня', '🍉🫐 Черника Арбуз', '🧊🌿 Холодная Мята', '🍈 Драгонфрут Дыня', '🧊🍊 Ледяной Мультифрукт', '🍑 Сочный Персик', '🌿 Мята Майями', '🍋🩷 Розовый Лимонад', '🍏 Кислое Яблоко', '🧊🍏 Ледяное Кислое Яблоко', '🌴 Тропические Фрукты', '🧊🐻 Белые Мармеладные Мишки Лёд'] },
             { id: 7, category: 'disposables', name: '💣 BEYOND 20000', price: '35.00 BYN', options: ['🍋🍋‍🟩 Лимон Лайм', '🥝🥭 Киви Маракуйя Гуава', '🥭 Тройной Манго', '🧊🍍🥥 Ананас Кокос Лёд', '🍑🍍🥭 Персик Ананас Манго'] },
             { id: 8, category: 'disposables', name: '💣 ELFBAR GH33000 PRO', price: '50.00 BYN', options: ['🧊🍏🥝 Яблоко Киви Лёд', '🧊🫐🫐 Черника Малина Лёд', '🍒🍍 Вишня Гранат Ананас', '🍒 Вишня', '🍊🥝 Грейпфрут Маракуйя Гуава', '🧊🍇 Виноград Лёд', '🥝🍍🍑 Киви Ананас Персик', '🍋🍋‍🟩 Лимон Лайм', '🌿 Горная Мята', '🍐🥤 Грушевая Содовая', '🔴 Гранат', '🍋🫐 Малина Грейпфрут Лимон', '🧊🍉 Арбуз Лёд'] },
             { id: 9, category: 'disposables', name: '💣 ELFBAR MOONNIGHT 40000', price: '50.00 BYN', options: ['🍉🍒 Арбуз Вишня', '🧊🍇 Виноград Лёд (x2)', '🍇🫐 Виноград Малина (x2)', '🔴 Гранат', '🥝🥭 Киви Маракуйя Гуава', '🥤🍋‍🟩 Кола Лайм', '🧊🍑 Персик Лёд'] },
-
-            // СНЮС
             { id: 10, category: 'snus', name: '🤬 DRYMOST VOLT 75mg', price: '20.00 BYN', options: ['🌿 Мята', '🍊 Цитрус'] },
             { id: 11, category: 'snus', name: '🤬 DRYMOST STORM 150mg', price: '20.00 BYN', options: ['🍏 Яблоко'] },
             { id: 12, category: 'snus', name: '🤬 DRYMOST BIOSHOCK 175mg', price: '20.00 BYN', options: ['🌿 Мята', '🍒 Вишня', '🍊 Апельсин'] },
@@ -188,8 +187,6 @@
             { id: 15, category: 'snus', name: '🤬 GLITCH 150mg', price: '20.00 BYN', options: ['🍊 Фанта', '🍏🍎 Двойное Яблоко', '🥤🍋 Кола Лимон', '🧊🍐 Ледяная Груша', '🧊🍋 Ледяной Лимон', '❄️ Ментол', '🌿 Эвкалипт Мята'] },
             { id: 16, category: 'snus', name: '🤬 ICEBERG EXTREME 75mg', price: '20.00 BYN', options: ['🍍🥭🥥 Ананас Манго Кокос', '🍉🍋‍🟩 Арбуз Лайм', '🍇 Виноград', '🍒 Вишня', '🫐 Дикие Ягоды', '🍈🍑 Дыня Персик'] },
             { id: 17, category: 'snus', name: '🤬 ICEBERG HARDCORE 150mg', price: '20.00 BYN', options: ['🫐 Ягодный Микс (Black Fury)', '🌲🫐 Дикие Ягоды и Хвоя (Dark Matter)', '🧊🌿 Морозная Мята (Frozen Pulse)', '❄️ Ментол (Ice Shock)'] },
-
-            // ЖИДКОСТИ
             { id: 18, category: 'liquids', name: '💋 NICE SHOT', price: '20.00 BYN', options: ['🫐 Три Ягоды', '🧊🍏 Ледяная Маракуйя с Яблоком', '🍏 Кислое Яблоко', '🍓🥝 Клубника Киви', '🥤🫐 Лимонад из Голубой Малины', '🍋🌿 Лимон Мята (x2)', '🌿🫐 Мятная Черника', '🍋‍🟩🍒 Кислая Малина с Гранатом'] },
             { id: 19, category: 'liquids', name: '💋 NICE SHOT DOUBLE ICE', price: '20.00 BYN', options: ['🥤🫐 Малиновый Лимонад', '🍏🍇 Зеленое Яблоко Виноград Малина', '🥤🥭 Лимонад Манго', '🍓🍌 Клубника Банан', '🥤🫐 Черничный Лимонад', '🌸🍇 Виноград Сакура', '🥤🍉 Арбузный Лимонад'] },
             { id: 20, category: 'liquids', name: '💋 NICE SHOT LOW SWEETNESS', price: '20.00 BYN', options: ['🍓🍉🍬 Клубнично-Арбузная Жвачка', '🫐 Черника Малина', '🍏🍎 Двойное Яблоко', '🥝🥭 Киви Маракуйя Гуава', '🍓🐉 Клубника Драгонфрут', '🍊 Апельсин с Мандарином', '🌈 Скитлс', '🐻🍉 Арбузные Мишки Гамми', '🫐 Ежевика', '🍍🍊 Ананас с Красным Апельсином', '🫐 Черная Смородина'] },
@@ -223,8 +220,6 @@
             { id: 48, category: 'liquids', name: '💀 PODONKI PODGON 50mg', price: '18.00 BYN', options: ['🍍🥭 Ананас Манго', '🥤🍍 Ананасовая Газировка', '🍊 Апельсиновый Фреш', '🥭 Зеленый Манго', '🥥 Coconut Малина', '🍋🌿 Лимон Мята', '🪱🍋 Лимонные Черви', '🫐 Малина Гранат', '🌲 Малина Хвоя', '🌿 Ментол Мята', '🍈 Сочная Дыня'] },
             { id: 49, category: 'liquids', name: '💀 PODONKI x MALASIAN NEW 50mg', price: '18.00 BYN', options: ['🍈 Дыня', '🍋🍋‍🟩 Лимон Лайм (x2)', '🥭 Желтый Манго (x2)', '🥥🍐🍌 Кокос Груша Банан (x2)', '🥤🐻 Кола Мармеладные Мишки', '🍉🥭 Арбуз Маракуйя', '🥤🩷 Розовый Лимонад (x2)', '🫐🍋 Черника Малина Лимон', '🫐 Черника Смородина Анис', '🍏🍒 Яблоко Черешня', '🍋🐻 Мармеладные Мишки Лимон (x2)', '🍍🥝 Ананас Киви', '🥝🍏 Киви Яблоко'] },
             { id: 50, category: 'liquids', name: '💀 PODONKI x MALASIAN ARCADE 50mg', price: '18.00 BYN', options: ['🥤🫐 Кола Ягоды', '🧊🍉 Арбузный Слаш', '🍑 Нектарин', '🍬 Малиновый Мармелад', '🫐 Черная Смородина Личи', '🥤🍏 Маунти Дью Яблоко'] },
-
-            // РАСХОДНИКИ
             { id: 51, category: 'consumables', name: '🛠 Испаритель XROS', price: '14.00 BYN', options: ['⚡ 0.8 om', '⚡ 0.6 om', '⚡ 0.4 om'] },
             { id: 52, category: 'consumables', name: '🛠 Испаритель AEGIS BOOST / HERO', price: '14.00 BYN', options: ['⚡ 0.2 om', '⚡ 0.3 om'] },
             { id: 53, category: 'consumables', name: '🛠 Картридж V.THRU / VMATE', price: '14.00 BYN', options: ['⚡ 0.7 om'] },
@@ -269,12 +264,10 @@
             if (station === 'Доставка') {
                 label.innerText = 'Укажите адрес доставки:';
                 commentInput.placeholder = 'Введите ваш точный адрес доставки...';
-                commentInput.required = true;
                 hint.style.display = 'block';
             } else {
                 label.innerText = 'Комментарий к заказу (необязательно):';
                 commentInput.placeholder = 'Ваши пожелания или дополнительный контакт...';
-                commentInput.required = false;
                 hint.style.display = 'none';
             }
         }
@@ -351,6 +344,7 @@
             });
         }
 
+        // НАДЁЖНАЯ ФУНКЦИЯ ОТПРАВКИ
         function sendOrder() {
             if (cart.length === 0) {
                 alert('Корзина пуста!');
@@ -367,34 +361,34 @@
                 return;
             }
 
-            try {
-                let totalPrice = 0;
-                const formattedItems = cart.map(i => {
-                    const rawPrice = String(i.price).replace(/[^0-9.]/g, '');
-                    const numPrice = parseFloat(rawPrice) || 0;
-                    totalPrice += numPrice * i.quantity;
-                    return {
-                        name: i.name,
-                        option: i.option,
-                        price: numPrice,
-                        quantity: i.quantity
-                    };
-                });
-
-                const data = {
-                    station: station,
-                    comment: comment,
-                    items: formattedItems,
-                    total_price: totalPrice.toFixed(2)
+            let totalPrice = 0;
+            const formattedItems = cart.map(i => {
+                const rawPrice = String(i.price).replace(/[^0-9.]/g, '');
+                const numPrice = parseFloat(rawPrice) || 0;
+                totalPrice += numPrice * i.quantity;
+                return {
+                    name: i.name,
+                    option: i.option,
+                    price: numPrice,
+                    quantity: i.quantity
                 };
+            });
 
-                if (window.Telegram && window.Telegram.WebApp) {
-                    tg.sendData(JSON.stringify(data));
-                } else {
-                    alert('Ошибка: Открывайте магазин прямо из Telegram-бота!');
-                }
-            } catch (err) {
-                alert('Произошла ошибка при отправке: ' + err.message);
+            const orderPayload = {
+                station: station,
+                comment: comment,
+                items: formattedItems,
+                total_price: totalPrice.toFixed(2)
+            };
+
+            const jsonString = JSON.stringify(orderPayload);
+
+            // Прямая отправка в Telegram
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.sendData) {
+                window.Telegram.WebApp.sendData(jsonString);
+                window.Telegram.WebApp.close();
+            } else {
+                alert('ОШИБКА: WebApp открыт вне Telegram! Отправка возможна только из приложения Telegram.');
             }
         }
 
